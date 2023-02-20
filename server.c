@@ -6,11 +6,28 @@
 /*   By: elisa <elisa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 17:50:15 by elisa             #+#    #+#             */
-/*   Updated: 2023/02/18 14:09:35 by elisa            ###   ########.fr       */
+/*   Updated: 2023/02/20 13:48:23 by elisa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+char	*ft_free(char *buffer, char buf)
+{
+	char	*temp;
+
+	if (buf)
+	{
+		temp = ft_strjoin(buffer, buf);
+		free(buffer);
+		return (temp);
+	}
+	else
+	{
+		free(buffer);
+		return (NULL);
+	}
+}
 
 void	aff_pid(void)
 {
@@ -21,8 +38,9 @@ void	aff_pid(void)
 
 void	recep(int s)
 {
-	static unsigned char	c = 0;
-	static int				i = 0;
+	static char	*stock;
+	static char	c = 0;
+	static int	i = 0;
 
 	c |= s == SIGUSR1;
 	i++;
@@ -30,7 +48,9 @@ void	recep(int s)
 		c = c << 1;
 	if (i == 8)
 	{
-		ft_putchar_fd(c, 1);
+		if (c == '\0')
+			ft_putstr_fd(stock, 1);
+		stock = ft_free(stock, c);
 		i = 0;
 		c = 0;
 	}
