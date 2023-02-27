@@ -6,11 +6,28 @@
 /*   By: elisa <elisa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:07:50 by elisa             #+#    #+#             */
-/*   Updated: 2023/02/18 18:40:34 by elisa            ###   ########.fr       */
+/*   Updated: 2023/02/27 15:39:11 by elisa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+char	*ft_free(char *buffer, char buf)
+{
+	char	*temp;
+
+	if (buf)
+	{
+		temp = ft_strjoin(buffer, buf);
+		free(buffer);
+		return (temp);
+	}
+	else
+	{
+		free(buffer);
+		return (NULL);
+	}
+}
 
 void	aff_pid(void)
 {
@@ -21,22 +38,28 @@ void	aff_pid(void)
 
 void	recep(int s, siginfo_t *sigt, void	*a)
 {
-	static unsigned char	c = 0;
-	static int				i = 0;
+	static char	*stock;
+	static char	c = 0;
+	static int	i = 0;
 
 	(void)a;
-	c |= s == SIGUSR2;
+	c |= s == SIGUSR1;
 	i++;
 	if (i < 8)
 		c = c << 1;
 	if (i == 8)
 	{
-		ft_putchar_fd(c, 1);
+		if (c == '\0')
+		{
+			ft_putstr_fd(stock, 1);
+			ft_putstr_fd("\n", 1);
+		}
+		stock = ft_free(stock, c);
 		i = 0;
 		c = 0;
 	}
 	usleep(200);
-	kill(sigt->si_pid, SIGUSR1);
+	kill(sigt->si_pid, SIGUSR2);
 }
 
 int	main(void)
@@ -46,9 +69,9 @@ int	main(void)
 	aff_pid();
 	s_sigaction.sa_flags = SA_SIGINFO;
 	s_sigaction.sa_sigaction = recep;
-	sigaction(SIGUSR1, &s_sigaction, NULL);
-	sigaction(SIGUSR2, &s_sigaction, NULL);
+	sigaction(SIGUSR1, &s_sigaction, 0);
+	sigaction(SIGUSR2, &s_sigaction, 0);
 	while (1)
 		pause();
-	return (1);
+	return (0);
 }

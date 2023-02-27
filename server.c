@@ -6,7 +6,7 @@
 /*   By: elisa <elisa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 17:50:15 by elisa             #+#    #+#             */
-/*   Updated: 2023/02/20 13:48:23 by elisa            ###   ########.fr       */
+/*   Updated: 2023/02/27 15:42:02 by elisa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ void	recep(int s)
 	if (i == 8)
 	{
 		if (c == '\0')
+		{
 			ft_putstr_fd(stock, 1);
+			ft_putstr_fd("\n", 1);
+		}
 		stock = ft_free(stock, c);
 		i = 0;
 		c = 0;

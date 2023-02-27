@@ -6,40 +6,11 @@
 /*   By: elisa <elisa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:07:44 by elisa             #+#    #+#             */
-/*   Updated: 2023/02/18 18:40:49 by elisa            ###   ########.fr       */
+/*   Updated: 2023/02/27 00:25:05 by elisa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-
-int	ft_atoi(const char *str)
-{
-	int	a;
-	int	b;
-	int	i;
-
-	a = 1;
-	b = 0;
-	i = 0;
-	while (str[i] && (str[i] == ' ' || str[i] == '\n' || str[i] == '\t'
-			|| str[i] == '\f' || str[i] == '\r' || str[i] == '\v'))
-		i++;
-	if (str[i] == '-')
-	{
-			a *= -1;
-			i++;
-	}
-	else if (str[i] == '+')
-		i++;
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		b = b + (str[i] - 48);
-		if (!(str[i + 1] < '0' || str[i + 1] > '9'))
-			b = b * 10;
-		i++;
-	}
-	return (a * b);
-}
 
 void	ft_putchar_fd(char c, int fd)
 {
@@ -56,6 +27,18 @@ void	ft_putstr_fd(char *s, int fd)
 		ft_putchar_fd(s[a], fd);
 		a++;
 	}
+}
+
+size_t	ft_strlen(const char *s)
+{
+	int	e;
+
+	e = 0 ;
+	if (!s)
+		return (0);
+	while (s[e] != '\0')
+		e++;
+	return (e);
 }
 
 void	ft_putnbr_fd(int n, int fd)
@@ -76,7 +59,27 @@ void	ft_putnbr_fd(int n, int fd)
 		ft_putchar_fd(n + '0', fd);
 }
 
-void	ft_putchar(char c)
+char	*ft_strjoin(char const *s1, char const s2)
 {
-	write(1, &c, 1);
+	char	*result;
+	int		len_s1;
+	int		n;
+
+	n = 0;
+	len_s1 = ft_strlen(s1);
+	result = malloc(sizeof(char) * (len_s1 + 1) + 1);
+	if (len_s1 == 0)
+	{
+		result[0] = s2;
+		result[1] = '\0';
+		return (result);
+	}
+	while (n < len_s1)
+	{
+		result[n] = s1[n];
+		n++;
+	}
+	result[n++] = s2;
+	result[n] = '\0';
+	return (result);
 }

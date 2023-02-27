@@ -6,7 +6,7 @@
 /*   By: elisa <elisa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 17:26:16 by elisa             #+#    #+#             */
-/*   Updated: 2023/02/20 13:49:01 by elisa            ###   ########.fr       */
+/*   Updated: 2023/02/27 00:25:14 by elisa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,3 @@ char	*ft_strjoin(char const *s1, char const s2)
 	result[n] = '\0';
 	return (result);
 }
-/*deuxieme boucle traite de la 2e partie de la chaine*/

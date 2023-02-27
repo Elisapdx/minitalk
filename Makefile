@@ -6,7 +6,7 @@
 #    By: elisa <elisa@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/11 17:30:55 by elisa             #+#    #+#              #
-#    Updated: 2023/02/18 14:23:18 by elisa            ###   ########.fr        #
+#    Updated: 2023/02/26 19:59:09 by elisa            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,9 @@ server_bonus: ${OBJS_S_BONUS} ${OBJS_BONUS}
 		${CC} ${CFLAGS} ${OBJS_S_BONUS} ${OBJS_BONUS} -o ${NAME_SERVER_BONUS}
 
 clean:
-		${RM} ${OBJS} ${OBJS_C} ${OBJS_S}
+		${RM} ${OBJS} ${OBJS_C} ${OBJS_S} ${OBJS_BONUS} ${OBJS_C_BONUS} ${OBJS_S_BONUS}
 
 fclean: clean
-		${RM} ${NAME_CLIENT} ${NAME_SERVER}
+		${RM} ${NAME_CLIENT} ${NAME_SERVER} ${NAME_CLIENT_BONUS} ${NAME_SERVER_BONUS}
+
+re: fclean all 
