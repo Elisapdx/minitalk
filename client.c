@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elisa <elisa@student.42.fr>                +#+  +:+       +#+        */
+/*   By: epraduro <epraduro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 15:23:41 by elisa             #+#    #+#             */
-/*   Updated: 2023/02/27 00:21:06 by elisa            ###   ########.fr       */
+/*   Updated: 2023/02/28 14:40:49 by epraduro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,16 @@ int	verif_pid(int pid)
 
 	if (pid <= 0)
 		return (0);
-	return (1);
 	i = 8;
-	while (i-- && kill(pid, SIGUSR1) == 0)
+	while (i--)
 	{
-		usleep(200);
+		if (kill(pid, SIGUSR1 == -1))
+			return (0);
 	}
-	if (i == -1)
-		return (1);
-	return (0);
+	return (1);
 }
 
-void	decal(unsigned char c, int pid)
+void	decal(char c, int pid)
 {
 	int	i;
 
@@ -70,8 +68,22 @@ void	decal(unsigned char c, int pid)
 		else
 			kill(pid, SIGUSR2);
 		i--;
-		usleep(200);
+		usleep(300);
 	}
+}
+
+int	ft_isalpha(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int	main(int argc, char **argv)
@@ -82,15 +94,20 @@ int	main(int argc, char **argv)
 	if (argc == 3)
 	{
 		i = 0;
+		if (!(ft_isalpha(argv[1])))
+		{	
+			ft_putstr_fd("Invalid PID\n", 1);
+			return (0);
+		}
 		pid = ft_atoi(argv[1]);
 		if (verif_pid(pid))
 		{
 			while (argv[2][i] != '\0')
 			{
-				decal((unsigned char) argv[2][i], pid);
+				decal(argv[2][i], pid);
 				i++;
 			}
-			decal((unsigned char) '\0', pid);
+			decal('\0', pid);
 		}
 		else
 			ft_putstr_fd("Invalid PID\n", 1);

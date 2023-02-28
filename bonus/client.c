@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elisa <elisa@student.42.fr>                +#+  +:+       +#+        */
+/*   By: epraduro <epraduro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:07:53 by elisa             #+#    #+#             */
-/*   Updated: 2023/02/27 15:40:54 by elisa            ###   ########.fr       */
+/*   Updated: 2023/02/28 14:43:38 by epraduro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	t_exit(int s)
 {
 	(void) s;
-	if (s == SIGUSR2)
+	if (s == SIGUSR1)
 		ft_putstr_fd("Signal recu!\n", 1);
 }
 
@@ -58,10 +58,7 @@ int	verif_pid(int pid)
 	while (i--)
 	{
 		if (kill(pid, SIGUSR1 == -1))
-		{
-			ft_putstr_fd("Invalid PID\n", 1);
 			return (0);
-		}
 	}
 	return (1);
 }
@@ -83,6 +80,20 @@ void	decal(unsigned char c, int pid)
 	}
 }
 
+int	ft_isalpha(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
 	int	i;
@@ -93,6 +104,11 @@ int	main(int argc, char **argv)
 	if (argc == 3)
 	{
 		i = 0;
+		if (!(ft_isalpha(argv[1])))
+		{	
+			ft_putstr_fd("Invalid PID\n", 1);
+			return (0);
+		}
 		pid = ft_atoi(argv[1]);
 		if (verif_pid(pid))
 		{
