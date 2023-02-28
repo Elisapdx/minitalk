@@ -6,7 +6,7 @@
 /*   By: epraduro <epraduro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 17:50:15 by elisa             #+#    #+#             */
-/*   Updated: 2023/02/28 12:59:09 by epraduro         ###   ########.fr       */
+/*   Updated: 2023/02/28 18:44:39 by epraduro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ void	aff_pid(void)
 	ft_putchar_fd('\n', 1);
 }
 
-void	recep(int s)
+void	recep(int s, siginfo_t *sigt, void	*a)
 {
 	static char	*stock;
 	static char	c = 0;
 	static int	i = 0;
 
+	(void)a;
 	c |= s == SIGUSR1;
 	i++;
 	if (i < 8)
@@ -58,14 +59,19 @@ void	recep(int s)
 		c = 0;
 	}
 	usleep(200);
+	kill(sigt->si_pid, SIGUSR2);
 }
 
 int	main(void)
 {
+	struct sigaction	s_sigaction;
+
 	aff_pid();
-	signal(SIGUSR1, recep);
-	signal(SIGUSR2, recep);
+	s_sigaction.sa_flags = SA_SIGINFO;
+	s_sigaction.sa_sigaction = recep;
+	sigaction(SIGUSR1, &s_sigaction, 0);
+	sigaction(SIGUSR2, &s_sigaction, 0);
 	while (1)
 		pause();
-	return (1);
+	return (0);
 }

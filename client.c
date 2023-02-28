@@ -6,11 +6,17 @@
 /*   By: epraduro <epraduro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 15:23:41 by elisa             #+#    #+#             */
-/*   Updated: 2023/02/28 14:40:49 by epraduro         ###   ########.fr       */
+/*   Updated: 2023/02/28 19:05:57 by epraduro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+void	t_exit(int s)
+{
+	if (s == SIGUSR2)
+		ft_putstr_fd("Signal recu!\n", 1);
+}
 
 int	ft_atoi(const char *str)
 {
@@ -56,7 +62,7 @@ int	verif_pid(int pid)
 	return (1);
 }
 
-void	decal(char c, int pid)
+void	decal(unsigned char c, int pid)
 {
 	int	i;
 
@@ -68,22 +74,9 @@ void	decal(char c, int pid)
 		else
 			kill(pid, SIGUSR2);
 		i--;
-		usleep(300);
+		pause();
+		usleep(200);
 	}
-}
-
-int	ft_isalpha(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 int	main(int argc, char **argv)
@@ -91,6 +84,7 @@ int	main(int argc, char **argv)
 	int	i;
 	int	pid;
 
+	signal(SIGUSR2, t_exit);
 	if (argc == 3)
 	{
 		i = 0;
@@ -103,10 +97,7 @@ int	main(int argc, char **argv)
 		if (verif_pid(pid))
 		{
 			while (argv[2][i] != '\0')
-			{
-				decal(argv[2][i], pid);
-				i++;
-			}
+				decal(argv[2][i++], pid);
 			decal('\0', pid);
 		}
 		else
